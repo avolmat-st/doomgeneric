@@ -88,6 +88,7 @@ void I_Tactile(int on, int off, int total)
 {
 }
 
+#ifndef MEMORY_CUSTOM_SECTION
 // Zone memory auto-allocation function that allocates the zone size
 // by trying progressively smaller zone sizes until one is found that
 // works.
@@ -129,9 +130,17 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
 
     return zonemem;
 }
+#else
+static byte doom_zone_memory[DEFAULT_RAM * 1024U * 1024U]
+	__attribute__((section(MEMORY_CUSTOM_SECTION), aligned(8)));
+#endif
 
 byte *I_ZoneBase (int *size)
 {
+#ifdef MEMORY_CUSTOM_SECTION
+    *size = (int)sizeof(doom_zone_memory);
+    return doom_zone_memory;
+#else
     byte *zonemem;
     int min_ram, default_ram;
     int p;
@@ -161,6 +170,7 @@ byte *I_ZoneBase (int *size)
            zonemem, *size);
 
     return zonemem;
+#endif
 }
 
 void I_PrintBanner(char *msg)
