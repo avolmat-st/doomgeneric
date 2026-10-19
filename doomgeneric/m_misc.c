@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <zephyr/fs/fs.h>
 #include <ctype.h>
 #include <errno.h>
 
@@ -66,6 +67,15 @@ void M_MakeDirectory(char *path)
 boolean M_FileExists(char *filename)
 {
     FILE *fstream;
+
+#ifdef __ZEPHYR__
+    if (strncmp(filename, "/SD:", 4) == 0)
+    {
+        struct fs_dirent entry;
+
+        return fs_stat(filename, &entry) == 0;
+    }
+#endif
 
     fstream = fopen(filename, "r");
 
