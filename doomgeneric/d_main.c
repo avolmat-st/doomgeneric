@@ -1319,7 +1319,11 @@ void D_DoomMain (void)
     {
         // Auto-detect the configuration dir.
 
+#ifdef CONFIG_DIR
+        M_SetConfigDir(CONFIG_DIR);
+#else
         M_SetConfigDir(NULL);
+#endif
     }
 
     //!

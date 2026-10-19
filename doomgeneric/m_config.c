@@ -2115,7 +2115,11 @@ char *M_GetSaveGameDir(char *iwadname)
 
         free(topdir);
 #else
+#ifndef SAVEGAME_FOLDER_NAME
         savegamedir = M_StringJoin(configdir, DIR_SEPARATOR_S, ".savegame/", NULL);
+#else
+        savegamedir = M_StringJoin(configdir, DIR_SEPARATOR_S, SAVEGAME_FOLDER_NAME, NULL);
+#endif
 
         M_MakeDirectory(savegamedir);
 

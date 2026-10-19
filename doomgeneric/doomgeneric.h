@@ -17,7 +17,11 @@
 
 typedef uint8_t pixel_t;
 
-#else  // CMAP256
+#elif defined(CRGB565)
+
+typedef uint16_t pixel_t;
+
+#else
 
 typedef uint32_t pixel_t;
 
